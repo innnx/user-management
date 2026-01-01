@@ -1,0 +1,65 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间标识mapper接口路径-->
+<mapper namespace="com.example.usermanagement.mapper.UserMapper">
+    <!-- 基础ResultMap -->
+    <resultMap id="BaseResultMap" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 插入SQL -->
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO s_user(username,password,email,phone,status)
+        VALUES (#{username},#{password},#{email},#{phone},#{status})
+    </insert>
+
+    <!-- 动态更新SQL -->
+    <update id="updateById" parameterType="User">
+        UPDATE s_user
+        <set>
+            <if test="username!=null">username=#{username},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="phone!=null">phone=#{phone},</if>
+            <if test="status!=null">status=#{status},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+<!--    查询SQL-->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM s_user WHERE id =#{id}
+    </select>
+
+<!--    分页查询（动态SQL）-->
+    <select id="selectByPage" resultMap="BaseResultMap">
+        SELECT * FROM s_user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (username LIKE CONCAT('%',#{keyword},'%')
+                OR email LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 批量插入（进阶） -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO s_user(username,password,email,phone,status)
+        VALUES 
+            <foreach collection="users" item="user" separator=",">
+                (#{user.username}, #{user.password}, #{user.email},
+                #{user.phone}, #{user.status})
+            </foreach>
+    </insert>
+
+</mapper>

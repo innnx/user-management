@@ -1,0 +1,54 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    tomcat:
+      uri-encoding: UTF-8
+#????
+spring:
+  application:
+    name: user-management
+#???
+datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/user_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+  username: root
+  password: 123456
+  type: com.zaxxer.hikari.HikariDatasource
+  hikari:
+    #?????
+    minimum-idle: 5
+    maximum-pool-size: 20
+    idele-timeout: 30000
+    pool-name: HikariCP
+    max-lifetime: 1800000
+    connection-timeout: 30000
+    connection-test-query: SELECT 1
+
+#jackson??
+jackson:
+  date-format: yyyy-mm-dd HH:mm:ss
+  time-zone: GMT+8
+  default-property-inclusion: non_null
+
+#mybatis??
+mybatis:
+  #mapper.xml????
+  mapper-locations: classpath:mapper/*.xml
+  #??????
+  type-aliases-package: com.example.usermanagement.entity
+  configuration:
+    #????????
+    map-underscore-to-camel-case: true
+    #????
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # ????null????setter??????
+    call-setters-on-nulls: false
+    #????
+    cache-enabled: true
+
+#????
+logging:
+  level:
+    com.example.usermanagement.mapper: DEBUG  #??SQL??
+    org.springframework.web: info
