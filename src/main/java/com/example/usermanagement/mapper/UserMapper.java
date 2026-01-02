@@ -31,4 +31,7 @@ public interface UserMapper {
 
     //批量插入
     int batchInsert(@Param("users")List<User> users);
+
+    //统计用户
+    Long countUsers();
 }

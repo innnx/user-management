@@ -52,7 +52,7 @@ public class UserController {
     }
 
     //获取用户列表
-    @GetMapping
+    @GetMapping("/page")
     public ResponseEntity<List<UserResponse>> getAllUsers(
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "1") Integer pageNum,

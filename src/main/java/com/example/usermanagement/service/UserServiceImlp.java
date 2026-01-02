@@ -5,6 +5,7 @@ import com.example.usermanagement.dto.UserResponse;
 import com.example.usermanagement.dto.UserUpdateRequest;
 import com.example.usermanagement.entity.User;
 import com.example.usermanagement.mapper.UserMapper;
+import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +36,7 @@ public class UserServiceImlp implements UserService {
         user.setStatus(1);
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
-        // 密码加密（实际项目中需要使用BCrypt等加密方式）
+        // 密码加密
         // user.setPassword(passwordEncoder.encode(request.getPassword()));
         userMapper.insert(user);
         log.info("创建用户成功，用户id：{}", user.getId());
@@ -93,16 +94,26 @@ public class UserServiceImlp implements UserService {
     }
 
     @Override//分页查询
-    public List<UserResponse> getUserByPage(String keyword, Integer page, Integer pageSize) {
+    public List<UserResponse> getUserByPage(String keyword, Integer pageNum, Integer pageSize) {
+        //参数校验
+        if (pageNum == null  || pageNum < 1) {
+            pageNum = 1;
+        }
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 10;
+        }
         // 使用PageHelper进行分页
-        // PageHelper.startPage(page, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<User> users = userMapper.selectByPage(keyword);
         return users.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
 
 
-
+    //转换为响应对象
     private UserResponse convertToResponse(User user) {
+        if (user == null) {
+            return null;
+        }
         UserResponse response = new UserResponse();
         BeanUtils.copyProperties(user, response);
         return response;

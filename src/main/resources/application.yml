@@ -2,7 +2,7 @@ server:
   port: 8080
   tomcat:
       uri-encoding: UTF-8
-#????
+#应用配置
 spring:
   application:
     name: user-management
@@ -13,7 +13,7 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC驱动类
   hikari:
-    #?????
+    #连接池配置
     minimum-idle: 5
     maximum-pool-size: 20
     idele-timeout: 30000
@@ -22,30 +22,40 @@ spring:
     connection-timeout: 30000
     connection-test-query: SELECT 1
 
-#jackson??
+#jackson配置
 jackson:
   date-format: yyyy-mm-dd HH:mm:ss
   time-zone: GMT+8
   default-property-inclusion: non_null
 
-#mybatis??
+#mybatis配置
 mybatis:
-  #mapper.xml????
+  #mapper.xml映射文件路径
   mapper-locations: classpath:mapper/*.xml
-  #??????
+  #实体类路径
   type-aliases-package: com.example.usermanagement.entity
   configuration:
-    #????????
+    #开启驼峰命名转换
     map-underscore-to-camel-case: true
     #????
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # ????null????setter??????
     call-setters-on-nulls: false
-    #????
+    #二级缓存
     cache-enabled: true
 
-#????
+#日志配置
 logging:
   level:
     com.example.usermanagement.mapper: DEBUG  #??SQL??
     org.springframework.web: info
+
+pagehelper:
+  helper-dialect: mysql     #数据库方言
+  reasonable: true          #分页合理化参数
+  support-methods-arguments: true     #支持通过mapper接口参数来传递分页参数
+  params: count=countSql    #用于从对象中根据属性名取值
+  page-size-zero: false     #当设置为true时，如果pagesize=Rowbounds.list=0会查询出全部的结果
+
+  #可选配置
+  auto-runtime-dialect: true    #自动检测数据库方言

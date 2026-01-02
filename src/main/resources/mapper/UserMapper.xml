@@ -61,14 +61,22 @@
                 #{user.phone}, #{user.status})
             </foreach>
     </insert>
+
     <!-- 根据用户名查询-->
     <select id="selectByUsername" resultMap="BaseResultMap">
         SELECT * FROM s_user
         WHERE username = #{username}
     </select>
+
     <!--  删除用户-->
     <delete id="deleteById">
         DELETE FROM s_user
         where id = #{id}
     </delete>
+
+    <!-- 统计用户-->
+    <select id="countUsers" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM s_user
+    </select>
+
 </mapper>
