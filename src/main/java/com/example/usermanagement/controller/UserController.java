@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin    //添加跨域支持
 public class UserController {
     private final UserService userService;
 

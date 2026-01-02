@@ -1,20 +1,17 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api
-    tomcat:
+  tomcat:
       uri-encoding: UTF-8
 #????
 spring:
   application:
     name: user-management
-#???
-datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/user_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
-  username: root
-  password: 123456
-  type: com.zaxxer.hikari.HikariDatasource
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC驱动类
   hikari:
     #?????
     minimum-idle: 5
